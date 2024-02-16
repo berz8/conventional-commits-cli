@@ -48,11 +48,17 @@ fn main() {
 
     println!("Commit message: {}", commit_message);
 
+    let commit_description = dialoguer::Input::<String>::new()
+        .with_prompt("Enter commit description")
+        .interact()
+        .unwrap();
+
     let commit = format!(
-        "{}: {} {}",
+        "{}: {} {} \n\n{}",
         commit_types[selection_commit_type.unwrap()].commit_type,
         gitmojis[selection_gitmoji.unwrap()].emoji,
-        commit_message
+        commit_message,
+        commit_description,
     );
 
     println!("{}", commit);
