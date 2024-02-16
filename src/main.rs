@@ -1,7 +1,7 @@
 use dialoguer::{theme::ColorfulTheme, Select};
 use serde::{Deserialize, Serialize};
 use serde_json::from_str;
-use std::env;
+use std::{default, env};
 
 fn main() {
     println!("---- Conventional Commits CLI ----");
@@ -50,6 +50,7 @@ fn main() {
 
     let commit_description = dialoguer::Input::<String>::new()
         .with_prompt("Enter commit description")
+        .default("".to_string())
         .interact()
         .unwrap();
 
