@@ -41,6 +41,12 @@ fn main() {
         None => panic!("No gitmoji selected"),
     }
 
+    let commit_context = dialoguer::Input::<String>::new()
+        .allow_empty(true)
+        .with_prompt("Commit context")
+        .interact_text()
+        .unwrap();
+
     let commit_message = dialoguer::Input::<String>::new()
         .with_prompt("Enter commit message")
         .interact()
@@ -49,14 +55,26 @@ fn main() {
     println!("Commit message: {}", commit_message);
 
     let commit_description = dialoguer::Input::<String>::new()
+        .allow_empty(true)
         .with_prompt("Enter commit description")
         .default("".to_string())
-        .interact()
+        .interact_text()
         .unwrap();
+
+    let commit_type_with_context: String;
+    if commit_context.len() > 0 {
+        commit_type_with_context = format!(
+            "{}({})",
+            commit_types[selection_commit_type.unwrap()].commit_type,
+            commit_context
+            )
+    } else {
+        commit_type_with_context = commit_types[selection_commit_type.unwrap()].commit_type.to_owned();
+    }
 
     let commit = format!(
         "{}: {} {} \n\n{}",
-        commit_types[selection_commit_type.unwrap()].commit_type,
+        commit_type_with_context,
         gitmojis[selection_gitmoji.unwrap()].emoji,
         commit_message,
         commit_description,
